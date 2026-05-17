@@ -114,7 +114,10 @@ namespace UserService.Services
         {
             var jwtSection = _config.GetSection("Jwt");
             var key = jwtSection.GetValue<string>("Key") ?? throw new InvalidOperationException("Jwt:Key not configured");
-            var issuer = jwtSection.GetValue<string>("Issuer") ?? "UserService";
+            //var issuer = jwtSection.GetValue<string>("Issuer") ?? "UserService";
+
+            var issuer = jwtSection["Issuer"];
+            var audience = jwtSection["Audience"];
 
             var keyBytes = Encoding.UTF8.GetBytes(key);
             var securityKey = new SymmetricSecurityKey(keyBytes);
@@ -129,7 +132,7 @@ namespace UserService.Services
 
             var token = new JwtSecurityToken(
                 issuer: issuer,
-                audience: issuer,
+                audience: audience,
                 claims: claims,
                 expires: DateTime.UtcNow.AddHours(6),
                 signingCredentials: creds

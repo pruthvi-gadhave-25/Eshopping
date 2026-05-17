@@ -32,6 +32,9 @@ var jwtSettings = builder.Configuration.GetSection("Jwt");
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        Console.WriteLine(jwtSettings["Key"]);
+        Console.WriteLine(jwtSettings["Issuer"]);
+        Console.WriteLine(jwtSettings["Audience"]);
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
