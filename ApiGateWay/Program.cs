@@ -1,5 +1,7 @@
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddReverseProxy()
+    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -16,10 +18,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.MapGet("/test", () => "gatway is working");
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.MapReverseProxy();
 
 app.MapControllers();
+
 
 app.Run();
